@@ -39,23 +39,3 @@ function deleteTodoItem(id) {
         method: "DELETE"
     });
 }
-
-// async function createTodo(a, b) {
-//     let response = await fetch("https://jsonplaceholder.typicode.com/posts", {
-//         method: "POST",
-//         body: JSON.stringify({
-//             title: a,
-//             body: b,
-//             userId: 1,
-//         }),
-//         headers: {
-//             "Content-type": "application/json; charset=UTF-8",
-//         }
-//     });
-
-//     let todos = await response.json();
-
-//     console.log(todos);
-// }
-
-// createTodo("tetis", "mama");
