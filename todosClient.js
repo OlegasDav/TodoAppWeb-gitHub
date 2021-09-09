@@ -4,7 +4,13 @@ async function getTodos() {
     return response.json();
 }
 
-async function createTodoItem(titleItem, descriptionItem, difficultyItem) {
+async function getTodo(id) {
+    const response = await fetch("https://localhost:5001/todos/" + id);
+
+    return response.json();
+}
+
+async function createTodo(titleItem, descriptionItem, difficultyItem) {
     let response = await fetch("https://localhost:5001/todos", {
         method: "POST",
         body: JSON.stringify({
@@ -20,7 +26,24 @@ async function createTodoItem(titleItem, descriptionItem, difficultyItem) {
     return response.json();
 }
 
-async function updateStatusTodoItem(id, status) {
+async function updateTodo(id, title, description, difficulty, isDone) {
+    let response = await fetch("https://localhost:5001/todos/" + id, {
+        method: "PUT",
+        body: JSON.stringify({
+            title,
+            description,
+            difficulty,
+            isDone
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    });
+
+    return response.json();
+}
+
+async function updateStatusTodo(id, status) {
     let response = await fetch("https://localhost:5001/todos/" + id + "/status", {
         method: "PUT",
         body: JSON.stringify({
@@ -34,7 +57,7 @@ async function updateStatusTodoItem(id, status) {
     return response.json();
 }
 
-function deleteTodoItem(id) {
+function deleteTodo(id) {
     fetch("https://localhost:5001/todos/" + id, {
         method: "DELETE"
     });
