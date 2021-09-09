@@ -1,5 +1,4 @@
 // variables
-//var todoForm = document.getElementById("todo-form");
 var enterTodoItem = document.getElementById('enter');
 var title = document.getElementById('title');
 var description = document.getElementById('description');
@@ -7,8 +6,13 @@ var difficulty = document.getElementById('difficulty');
 var todoList = document.getElementById("todos");
 var doneList = document.getElementById("dones");
 var addForm = document.getElementById('addForm');
-//var todoInput = document.getElementById("todo-input");
-var editInput = document.getElementById('edit-input');
+
+var updateTodoItem = document.getElementById('update');
+var editTitle = document.getElementById('editTitle');
+var editDescription = document.getElementById('editDescription');
+var editDifficulty = document.getElementById('editDifficulty');
+var editIsDone = document.getElementById('editIsDone');
+var id;
 
 // Get all Todo item cards
 window.onload = async () => {
@@ -57,6 +61,24 @@ document.addEventListener('input', () => {
   if (difficulty.value) {
     difficulty.classList.remove('is-invalid');
   }
+
+  if (editTitle.value != '' && editDescription.value != '' && editDifficulty.value != '' && editIsDone.value != '') {
+    updateTodoItem.setAttribute("data-bs-dismiss", "modal");
+  } else {
+    updateTodoItem.removeAttribute("data-bs-dismiss");
+  }
+  if (editTitle.value) {
+    editTitle.classList.remove('is-invalid');
+  }
+  if (editDescription.value) {
+    editDescription.classList.remove('is-invalid');
+  }
+  if (editDifficulty.value) {
+    editDifficulty.classList.remove('is-invalid');
+  }
+  if (editIsDone.value) {
+    editIsDone.classList.remove('is-invalid');
+  }
 });
 
 
@@ -71,7 +93,7 @@ enterTodoItem.addEventListener('click', async () => {
     difficulty.classList.add('is-invalid');
   }
   if (title.value != '' && description.value != '' && difficulty.value != '') {
-    let newTodoItem = await createTodoItem(title.value, description.value, difficulty.value);
+    let newTodoItem = await createTodo(title.value, description.value, difficulty.value);
 
     var todoItem = `
     <div class="border border-1 shadow-sm p-3 mb-3  rounded todo-item" data-id=${newTodoItem.id}>
@@ -91,51 +113,62 @@ enterTodoItem.addEventListener('click', async () => {
   }
 });
 
-// todoForm.addEventListener("submit", function (e) {
-//   e.preventDefault();
-
-//   if (todoInput.value.length > 0) {
-//     todoInput.classList.remove("is-invalid");
-//     var todoItem = `
-//         <div class="border border-1 shadow-sm p-3 mb-3 rounded todo-item">
-//             <h4 class="mb-3 input-name">${todoInput.value}</h4>
-//             <button type="button" class="btn btn-danger delete">Delete</button>
-//             <button type="button" class="btn btn-success move-todo">Move to Done</button>
-//             <button type="button" class="btn btn-warning edit" data-bs-toggle="modal"
-//                 data-bs-target="#edit-modal">Edit</button>
-//         </div>`;
-//     todoList.innerHTML += todoItem;
-//     todoForm.reset();
-//   } else {
-//     todoInput.classList.add("is-invalid");
-//   }
-// });
-
 // Todo item card actions
 document.addEventListener("click", async function (e) {
+
   if (e.target.matches(".delete")) {
-    location.reload();
-    let id = e.target.closest(".todo-item").getAttribute("data-id");
-    deleteTodoItem(id);
+    id = e.target.closest(".todo-item").getAttribute("data-id");
+    deleteTodo(id);
     e.target.closest(".todo-item").remove();
+    location.reload();
     return;
+  }
+
+  if (e.target.matches(".edit")) {
+    id = e.target.closest(".todo-item").getAttribute("data-id");
+
+    var editedTodo = await getTodo(id);
+    editTitle.value = editedTodo.title;
+    editDescription.value = editedTodo.description;
+    editDifficulty.value = editedTodo.difficulty;
+    editIsDone.value = editedTodo.isDone;
+  }
+
+  if (e.target.matches("#update")) {
+    if (editTitle.value == '') {
+      editTitle.classList.add('is-invalid');
+    }
+    if (editDescription.value == '') {
+      editDescription.classList.add('is-invalid');
+    }
+    if (editDifficulty.value == '') {
+      editDifficulty.classList.add('is-invalid');
+    }
+    if (editIsDone.value == '') {
+      editIsDone.classList.add('is-invalid');
+    }
+    if (editTitle.value != '' && editDescription.value != '' && editDifficulty.value != '' && editIsDone.value != '') {
+      var isDone = editIsDone.value.toLowerCase() == "true" ? true : false;
+      await updateTodo(id, editTitle.value, editDescription.value, editDifficulty.value, isDone);
+      location.reload();
+    }
   }
 
   if (e.target.matches(".btn-success")) {
     var card = e.target.closest(".todo-item");
     var status = false;
-    let id = e.target.closest(".todo-item").getAttribute("data-id");
+    id = e.target.closest(".todo-item").getAttribute("data-id");
 
     if (e.target.innerText == "Move to Done") {
       e.target.innerText = "Move back";
       status = true;
-      updateStatusTodoItem(id, status);
+      updateStatusTodo(id, status);
       doneList.appendChild(card);
       return;
     }
 
     e.target.innerText = "Move to Done";
-    updateStatusTodoItem(id, status);
+    updateStatusTodo(id, status);
     todoList.appendChild(card);
   }
 });
