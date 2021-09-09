@@ -18,21 +18,8 @@
       <div class="col-12">
         <div class="row justify-content-center">
           <h2 class="text-center mt-5">Todo List</h2>
-          <!-- <form id="todo-form" class="row g-2 justify-content-center mt-3 needs-validation">
-            <div class="col-4">
-              <div class="input-group has-validation">
-                <input type="text" name="task" class="form-control" id="todo-input" placeholder="Enter a task" />
-                <div class="invalid-feedback">Please enter a task</div>
-              </div>
-            </div>
-            <div class="col-auto">
-              <button id="mygtukas" type="submit" class="btn btn-primary mb-3 px-4">
-                Add
-              </button>
-            </div>
-          </form> -->
           <div class="col-8">
-            <button type="button" class="btn btn-primary mb-4 mt-4 naujas" data-bs-toggle="modal"
+            <button type="button" class="btn btn-primary mb-4 mt-4" data-bs-toggle="modal"
               data-bs-target="#add_modal">
               Add new task
             </button>
@@ -91,30 +78,65 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary modalClose" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button id="enter" type="button" class="btn btn-primary">Add</button>
           </div>
         </div>
       </div>
     </div>
     <!-- Edit modal -->
-    <div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Edit task</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <input type="text" name="task" class="form-control" id="edit-input" />
+            <form id="editForm">
+              <div class="form-group mb-3">
+                <label for="editTitle">Title</label>
+                <input type="text" class="form-control" id="editTitle">
+                <div class="invalid-feedback">
+                  Enter the title of the task please
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="editDescription">Description</label>
+                <input type="text" class="form-control" id="editDescription">
+                <div class="invalid-feedback">
+                  Enter the description of the task please
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="editDifficulty" class="form-label">Difficulty</label>
+                <select id="editDifficulty" class="form-select">
+                    <option value="" selected>Select the difficulty</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+                <div class="invalid-feedback">
+                  Select the difficulty of the task please
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="editIsDone" class="form-label">Status</label>
+                <select id="editIsDone" class="form-select">
+                    <option value="" selected>Select the status</option>
+                    <option value="false">Not done</option>
+                    <option value="true">Done</option>
+                </select>
+                <div class="invalid-feedback">
+                  Select the status of the task please
+                </div>
+              </div>
+            </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              Close
-            </button>
-            <button type="button" class="btn btn-primary edit-submit" data-bs-dismiss="modal">
-              Edit
-            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="update" type="button" class="btn btn-primary">Update</button>
           </div>
         </div>
       </div>
