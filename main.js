@@ -93,23 +93,26 @@ enterTodoItem.addEventListener('click', async () => {
     difficulty.classList.add('is-invalid');
   }
   if (title.value != '' && description.value != '' && difficulty.value != '') {
-    let newTodoItem = await createTodo(title.value, description.value, difficulty.value);
+    createTodo(title.value, description.value, difficulty.value);
 
-    var todoItem = `
-    <div class="border border-1 shadow-sm p-3 mb-3  rounded todo-item" data-id=${newTodoItem.id}>
-        <h4 class="mb-3 input-name">${newTodoItem.title}</h4>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><strong>Description:</strong> ${newTodoItem.description} </li>
-          <li class="list-group-item"><strong>Difficulty:</strong> ${newTodoItem.difficulty} </li>
-          <li class="list-group-item"><strong>Date created:</strong> ${newTodoItem.dateCreated} </li>
-        </ul>
-        <button type="button" class="btn btn-danger delete">Delete</button>
-        <button type="button" class="btn btn-success move-todo">Move to Done</button>
-        <button type="button" class="btn btn-warning edit" data-bs-toggle="modal" data-bs-target="#edit-modal">Edit</button>
-    </div>`;
-    todoList.innerHTML += todoItem;
+    //let newTodoItem = await createTodo(title.value, description.value, difficulty.value);
+
+    // var todoItem = `
+    // <div class="border border-1 shadow-sm p-3 mb-3  rounded todo-item" data-id=${newTodoItem.id}>
+    //     <h4 class="mb-3 input-name">${newTodoItem.title}</h4>
+    //     <ul class="list-group list-group-flush">
+    //       <li class="list-group-item"><strong>Description:</strong> ${newTodoItem.description} </li>
+    //       <li class="list-group-item"><strong>Difficulty:</strong> ${newTodoItem.difficulty} </li>
+    //       <li class="list-group-item"><strong>Date created:</strong> ${newTodoItem.dateCreated} </li>
+    //     </ul>
+    //     <button type="button" class="btn btn-danger delete">Delete</button>
+    //     <button type="button" class="btn btn-success move-todo">Move to Done</button>
+    //     <button type="button" class="btn btn-warning edit" data-bs-toggle="modal" data-bs-target="#edit-modal">Edit</button>
+    // </div>`;
+    //todoList.innerHTML += todoItem;
     addForm.reset();
     enterTodoItem.removeAttribute("data-bs-dismiss");
+    location.reload();
   }
 });
 
