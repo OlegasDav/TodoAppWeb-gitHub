@@ -14,34 +14,33 @@ var editDifficulty = document.getElementById('editDifficulty');
 var editIsDone = document.getElementById('editIsDone');
 var id;
 
+function CreateCard(todo) {
+
+  return `
+  <div class="border border-1 shadow-sm p-3 mb-3  rounded todo-item" data-id=${todo.id}>
+      <h4 class="mb-3 input-name">${todo.title}</h4>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Description:</strong> ${todo.description} </li>
+        <li class="list-group-item"><strong>Difficulty:</strong> ${todo.difficulty} </li>
+        <li class="list-group-item"><strong>Date created:</strong> ${todo.dateCreated} </li>
+      </ul>
+      <button type="button" class="btn btn-danger delete">Delete</button>
+      <button type="button" class="btn btn-success">${todo.isDone ? "Move back": "Move to Done"}</button>
+      <button type="button" class="btn btn-warning edit" data-bs-toggle="modal" data-bs-target="#edit-modal">Edit</button>
+  </div>`;
+}
+
 // Get all Todo item cards
 window.onload = async () => {
   const todos = await getTodos();
 
   todos.forEach(todo => {
     if (!todo.isDone) {
-      var todoItem = CreateCard('move-todo', 'Move to Done');
-      todoList.innerHTML += todoItem;
-    } else {
-      var todoItem = CreateCard('move-done', 'Move Back');;
-      doneList.innerHTML += todoItem;
-    }
+      todoList.innerHTML += CreateCard(todo);
 
-    function CreateCard(classTodoItem, buttonTodoItem) {
-
-      return `
-      <div class="border border-1 shadow-sm p-3 mb-3  rounded todo-item" data-id=${todo.id}>
-          <h4 class="mb-3 input-name">${todo.title}</h4>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>Description:</strong> ${todo.description} </li>
-            <li class="list-group-item"><strong>Difficulty:</strong> ${todo.difficulty} </li>
-            <li class="list-group-item"><strong>Date created:</strong> ${todo.dateCreated} </li>
-          </ul>
-          <button type="button" class="btn btn-danger delete">Delete</button>
-          <button type="button" class="btn btn-success ${classTodoItem}">${buttonTodoItem}</button>
-          <button type="button" class="btn btn-warning edit" data-bs-toggle="modal" data-bs-target="#edit-modal">Edit</button>
-      </div>`;
+      return;
     }
+      doneList.innerHTML += CreateCard(todo);
   });
 }
 
@@ -93,23 +92,13 @@ enterTodoItem.addEventListener('click', async () => {
     difficulty.classList.add('is-invalid');
   }
   if (title.value != '' && description.value != '' && difficulty.value != '') {
-    createTodo(title.value, description.value, difficulty.value);
-
-    //let newTodoItem = await createTodo(title.value, description.value, difficulty.value);
-
-    // var todoItem = `
-    // <div class="border border-1 shadow-sm p-3 mb-3  rounded todo-item" data-id=${newTodoItem.id}>
-    //     <h4 class="mb-3 input-name">${newTodoItem.title}</h4>
-    //     <ul class="list-group list-group-flush">
-    //       <li class="list-group-item"><strong>Description:</strong> ${newTodoItem.description} </li>
-    //       <li class="list-group-item"><strong>Difficulty:</strong> ${newTodoItem.difficulty} </li>
-    //       <li class="list-group-item"><strong>Date created:</strong> ${newTodoItem.dateCreated} </li>
-    //     </ul>
-    //     <button type="button" class="btn btn-danger delete">Delete</button>
-    //     <button type="button" class="btn btn-success move-todo">Move to Done</button>
-    //     <button type="button" class="btn btn-warning edit" data-bs-toggle="modal" data-bs-target="#edit-modal">Edit</button>
-    // </div>`;
-    //todoList.innerHTML += todoItem;
+    var todoItem = {
+      title: title.value,
+      description: description.value,
+      difficulty: difficulty.value
+    };
+    
+    await createTodo(todoItem);
     addForm.reset();
     enterTodoItem.removeAttribute("data-bs-dismiss");
     location.reload();
@@ -121,14 +110,16 @@ document.addEventListener("click", async function (e) {
 
   if (e.target.matches(".delete")) {
     id = e.target.closest(".todo-item").getAttribute("data-id");
-    deleteTodo(id);
+    await deleteTodo(id);
     e.target.closest(".todo-item").remove();
     location.reload();
     return;
   }
 
   if (e.target.matches(".edit")) {
-    id = e.target.closest(".todo-item").getAttribute("data-id");
+    const todoItem = e.target.closest(".todo-item");
+
+    id = todoItem.getAttribute("data-id");
 
     var editedTodo = await getTodo(id);
     editTitle.value = editedTodo.title;
@@ -152,7 +143,13 @@ document.addEventListener("click", async function (e) {
     }
     if (editTitle.value != '' && editDescription.value != '' && editDifficulty.value != '' && editIsDone.value != '') {
       var isDone = editIsDone.value.toLowerCase() == "true" ? true : false;
-      await updateTodo(id, editTitle.value, editDescription.value, editDifficulty.value, isDone);
+      var todoItem = {
+        title: editTitle.value,
+        description: editDescription.value,
+        difficulty: editDifficulty.value,
+        isDone: isDone
+      };
+      await updateTodo(id, todoItem);
       location.reload();
     }
   }
@@ -163,15 +160,15 @@ document.addEventListener("click", async function (e) {
     id = e.target.closest(".todo-item").getAttribute("data-id");
 
     if (e.target.innerText == "Move to Done") {
-      e.target.innerText = "Move back";
       status = true;
-      updateStatusTodo(id, status);
+      await updateStatusTodo(id, status);
       doneList.appendChild(card);
+      location.reload();
       return;
     }
 
-    e.target.innerText = "Move to Done";
-    updateStatusTodo(id, status);
+    await updateStatusTodo(id, status);
     todoList.appendChild(card);
+    location.reload();
   }
 });
