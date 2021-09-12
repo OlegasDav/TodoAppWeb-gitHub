@@ -1,117 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To do</title>
-    <!-- CSS only -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="main.css" />
-  </head>
 
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To do</title>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous" />
+  <link rel="stylesheet" href="main.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="row justify-content-center">
           <h2 class="text-center mt-5">Todo List</h2>
-          <form
-            id="todo-form"
-            class="row g-2 justify-content-center mt-3 needs-validation"
-          >
-            <div class="col-4">
-              <div class="input-group has-validation">
-                <input
-                  type="text"
-                  name="task"
-                  class="form-control"
-                  id="todo-input"
-                  placeholder="Enter a task"
-                />
-                <div class="invalid-feedback">Please enter a task</div>
-              </div>
-            </div>
-            <div class="col-auto">
-              <button
-                id="mygtukas"
-                type="submit"
-                class="btn btn-primary mb-3 px-4"
-              >
-                Add
-              </button>
-            </div>
-          </form>
-        </div>
-        <div class="col-12 mt-4">
-          <div class="row justify-content-center">
-            <div id="todos" class="col-4">
-              <h3 class="text-center border-bottom border-2 pb-2 mb-3">Todo</h3>
-            </div>
-            <div id="dones" class="col-4">
-              <h3 class="text-center border-bottom border-2 pb-2 mb-3">Done</h3>
-            </div>
+          <div class="col-8">
+            <button type="button" class="btn btn-primary mb-4 mt-4" data-bs-toggle="modal"
+              data-bs-target="#add_modal">
+              Add new task
+            </button>
           </div>
         </div>
       </div>
-      <!-- Modal -->
-      <div
-        class="modal fade"
-        id="edit-modal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Edit task</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <input
-                type="text"
-                name="task"
-                class="form-control"
-                id="edit-input"
-              />
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary edit-submit"
-                data-bs-dismiss="modal"
-              >
-                Edit
-              </button>
-            </div>
+      <div class="col-12 mt-4">
+        <div class="row justify-content-center">
+          <div id="todos" class="col-4">
+            <h3 class="text-center border-bottom border-2 pb-2 mb-3">Todo</h3>
+          </div>
+          <div id="dones" class="col-4">
+            <h3 class="text-center border-bottom border-2 pb-2 mb-3">Done</h3>
           </div>
         </div>
       </div>
     </div>
+    <!-- Modal -->
+    <!-- Add modal -->
+    <div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New task</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="addForm">
+              <div class="form-group mb-3">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title">
+                <div class="invalid-feedback">
+                  Enter the title of the task please
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description">
+                <div class="invalid-feedback">
+                  Enter the description of the task please
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="difficulty" class="form-label">Difficulty</label>
+                <select id="difficulty" class="form-select">
+                    <option value="" selected>Select the difficulty</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+                <div class="invalid-feedback">
+                  Select the difficulty of the task please
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="enter" type="button" class="btn btn-primary">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Edit modal -->
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit task</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="editForm">
+              <div class="form-group mb-3">
+                <label for="editTitle">Title</label>
+                <input type="text" class="form-control" id="editTitle">
+                <div class="invalid-feedback">
+                  Enter the title of the task please
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="editDescription">Description</label>
+                <input type="text" class="form-control" id="editDescription">
+                <div class="invalid-feedback">
+                  Enter the description of the task please
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="editDifficulty" class="form-label">Difficulty</label>
+                <select id="editDifficulty" class="form-select">
+                    <option value="" selected>Select the difficulty</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+                <div class="invalid-feedback">
+                  Select the difficulty of the task please
+                </div>
+              </div>
+              <div class="form-group mb-3">
+                <label for="editIsDone" class="form-label">Status</label>
+                <select id="editIsDone" class="form-select">
+                    <option value="" selected>Select the status</option>
+                    <option value="false">Not done</option>
+                    <option value="true">Done</option>
+                </select>
+                <div class="invalid-feedback">
+                  Select the status of the task please
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="update" type="button" class="btn btn-primary">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-      crossorigin="anonymous"
-    ></script>
-    <script src="todosClient.js"></script>
-    <script src="main.js"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+  <script src="todosClient.js"></script>
+  <script src="main.js"></script>
+</body>
+
 </html>
