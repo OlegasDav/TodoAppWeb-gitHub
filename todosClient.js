@@ -1,23 +1,21 @@
+const baseUrl = "https://localhost:5001/todos";
+
 async function getTodos() {
-    const response = await fetch("https://localhost:5001/todos");
+    const response = await fetch(baseUrl);
 
     return response.json();
 }
 
 async function getTodo(id) {
-    const response = await fetch("https://localhost:5001/todos/" + id);
+    const response = await fetch(`${baseUrl}/${id}`);
 
     return response.json();
 }
 
-async function createTodo(titleItem, descriptionItem, difficultyItem) {
-    let response = await fetch("https://localhost:5001/todos", {
+async function createTodo(todoItem) {
+    let response = await fetch(baseUrl, {
         method: "POST",
-        body: JSON.stringify({
-            title: titleItem,
-            description: descriptionItem,
-            difficulty: difficultyItem
-        }),
+        body: JSON.stringify(todoItem),
         headers: {
             "Content-type": "application/json; charset=UTF-8"
         }
@@ -26,15 +24,10 @@ async function createTodo(titleItem, descriptionItem, difficultyItem) {
     return response.json();
 }
 
-async function updateTodo(id, title, description, difficulty, isDone) {
-    let response = await fetch("https://localhost:5001/todos/" + id, {
+async function updateTodo(id, todoItem) {
+    let response = await fetch(`${baseUrl}/${id}`, {
         method: "PUT",
-        body: JSON.stringify({
-            title,
-            description,
-            difficulty,
-            isDone
-        }),
+        body: JSON.stringify(todoItem),
         headers: {
             "Content-type": "application/json; charset=UTF-8"
         }
@@ -44,7 +37,7 @@ async function updateTodo(id, title, description, difficulty, isDone) {
 }
 
 async function updateStatusTodo(id, status) {
-    let response = await fetch("https://localhost:5001/todos/" + id + "/status", {
+    let response = await fetch(`${baseUrl}/${id}/status`, {
         method: "PUT",
         body: JSON.stringify({
             isDone: status
@@ -57,8 +50,8 @@ async function updateStatusTodo(id, status) {
     return response.json();
 }
 
-function deleteTodo(id) {
-    fetch("https://localhost:5001/todos/" + id, {
+async function deleteTodo(id) {
+    await fetch(`${baseUrl}/${id}`, {
         method: "DELETE"
     });
 }
